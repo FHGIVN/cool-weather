@@ -3,7 +3,8 @@ package com.coolweather.app.model;
 public class City {
 	private int id;
 	private String cityName;
-	private String cityCode;
+	private String cityPyName;
+	private String cityUrl;
 	private int provinceId;
 
 	public int getId() {
@@ -22,12 +23,20 @@ public class City {
 		this.cityName = cityName;
 	}
 
-	public String getCityCode() {
-		return cityCode;
+	public String getCityPyName() {
+		return cityPyName;
 	}
 
-	public void setCityCode(String cityCode) {
-		this.cityCode = cityCode;
+	public void setCityPyName(String cityPyName) {
+		this.cityPyName = cityPyName;
+	}
+
+	public String getCityUrl() {
+		return cityUrl;
+	}
+
+	public void setCityUrl(String cityUrl) {
+		this.cityUrl = cityUrl;
 	}
 
 	public int getProvinceId() {

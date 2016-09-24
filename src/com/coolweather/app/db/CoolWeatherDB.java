@@ -47,7 +47,7 @@ public class CoolWeatherDB {
 		if (province != null) {
 			ContentValues values = new ContentValues();
 			values.put("province_name", province.getProvinceName());
-			values.put("province_code", province.getProvinceCode());
+			values.put("province_py_name", province.getProvincePyName());
 			db.insert("Province", null, values);
 		}
 	}
@@ -65,8 +65,8 @@ public class CoolWeatherDB {
 				province.setId(cursor.getInt(cursor.getColumnIndex("id")));
 				province.setProvinceName(cursor.getString(cursor
 						.getColumnIndex("province_name")));
-				province.setProvinceCode(cursor.getString(cursor
-						.getColumnIndex("province_code")));
+				province.setProvincePyName(cursor.getString(cursor
+						.getColumnIndex("province_py_name")));
 				list.add(province);
 			} while (cursor.moveToNext());
 		}
@@ -80,7 +80,8 @@ public class CoolWeatherDB {
 		if (city != null) {
 			ContentValues values = new ContentValues();
 			values.put("city_name", city.getCityName());
-			values.put("city_code", city.getCityCode());
+			values.put("city_py_name", city.getCityPyName());
+			values.put("city_url", city.getCityUrl());
 			values.put("province_id", city.getProvinceId());
 			db.insert("City", null, values);
 		}
@@ -99,8 +100,9 @@ public class CoolWeatherDB {
 				city.setId(cursor.getInt(cursor.getColumnIndex("id")));
 				city.setCityName(cursor.getString(cursor
 						.getColumnIndex("city_name")));
-				city.setCityCode(cursor.getString(cursor
-						.getColumnIndex("city_code")));
+				city.setCityPyName(cursor.getString(cursor
+						.getColumnIndex("city_py_name")));
+				city.setCityUrl(cursor.getString(cursor.getColumnIndex("city_url")));
 				city.setProvinceId(provinceId);
 				list.add(city);
 			} while (cursor.moveToNext());
@@ -115,9 +117,9 @@ public class CoolWeatherDB {
 		if (country != null) {
 			ContentValues values = new ContentValues();
 			values.put("country_name", country.getCountryName());
-			values.put("country_code", country.getCountryCode());
+			values.put("country_url", country.getCountryUrl());
 			values.put("city_id", country.getCityId());
-			db.insert("City", null, values);
+			db.insert("Country", null, values);
 		}
 	}
 
@@ -134,8 +136,8 @@ public class CoolWeatherDB {
 				country.setId(cursor.getInt(cursor.getColumnIndex("id")));
 				country.setCountryName(cursor.getString(cursor
 						.getColumnIndex("country_name")));
-				country.setCountryCode(cursor.getString(cursor
-						.getColumnIndex("country_code")));
+				country.setCountryUrl(cursor.getString(cursor
+						.getColumnIndex("country_url")));
 				country.setCityId(cityId);
 				list.add(country);
 			} while (cursor.moveToNext());
