@@ -82,7 +82,7 @@ public class CoolWeatherDB {
 			values.put("city_name", city.getCityName());
 			values.put("city_py_name", city.getCityPyName());
 			values.put("city_url", city.getCityUrl());
-			values.put("province_id", city.getProvinceId());
+			values.put("belong_to_province", city.getBelongToProvince());
 			db.insert("City", null, values);
 		}
 	}
@@ -90,10 +90,10 @@ public class CoolWeatherDB {
 	/**
 	 * 从数据库读取某省下所有的城市信息
 	 * */
-	public List<City> loadCities(int provinceId) {
+	public List<City> loadCities(String belongToProvince) {
 		List<City> list = new ArrayList<City>();
-		Cursor cursor = db.query("City", null, "province_id = ?",
-				new String[] { String.valueOf(provinceId) }, null, null, null);
+		Cursor cursor = db.query("City", null, "belong_to_province = ?",
+				new String[] { belongToProvince }, null, null, null);
 		if (cursor.moveToFirst()) {
 			do {
 				City city = new City();
@@ -102,8 +102,9 @@ public class CoolWeatherDB {
 						.getColumnIndex("city_name")));
 				city.setCityPyName(cursor.getString(cursor
 						.getColumnIndex("city_py_name")));
-				city.setCityUrl(cursor.getString(cursor.getColumnIndex("city_url")));
-				city.setProvinceId(provinceId);
+				city.setCityUrl(cursor.getString(cursor
+						.getColumnIndex("city_url")));
+				city.setBelongToProvince(belongToProvince);
 				list.add(city);
 			} while (cursor.moveToNext());
 		}
@@ -118,7 +119,7 @@ public class CoolWeatherDB {
 			ContentValues values = new ContentValues();
 			values.put("country_name", country.getCountryName());
 			values.put("country_url", country.getCountryUrl());
-			values.put("city_id", country.getCityId());
+			values.put("belong_to_city", country.getBelongToCity());
 			db.insert("Country", null, values);
 		}
 	}
@@ -126,10 +127,10 @@ public class CoolWeatherDB {
 	/**
 	 * 从数据库读取某城市下所有的县信息
 	 * */
-	public List<Country> loadCountries(int cityId) {
+	public List<Country> loadCountries(String belongToCity) {
 		List<Country> list = new ArrayList<Country>();
-		Cursor cursor = db.query("Country", null, "city_id = ?",
-				new String[] { String.valueOf(cityId) }, null, null, null);
+		Cursor cursor = db.query("Country", null, "belong_to_city = ?",
+				new String[] { belongToCity }, null, null, null);
 		if (cursor.moveToFirst()) {
 			do {
 				Country country = new Country();
@@ -138,7 +139,7 @@ public class CoolWeatherDB {
 						.getColumnIndex("country_name")));
 				country.setCountryUrl(cursor.getString(cursor
 						.getColumnIndex("country_url")));
-				country.setCityId(cityId);
+				country.setBelongToCity(belongToCity);
 				list.add(country);
 			} while (cursor.moveToNext());
 		}

@@ -5,7 +5,7 @@ public class City {
 	private String cityName;
 	private String cityPyName;
 	private String cityUrl;
-	private int provinceId;
+	private String belongToProvince;
 
 	public int getId() {
 		return id;
@@ -39,12 +39,12 @@ public class City {
 		this.cityUrl = cityUrl;
 	}
 
-	public int getProvinceId() {
-		return provinceId;
+	public String getBelongToProvince() {
+		return belongToProvince;
 	}
 
-	public void setProvinceId(int provinceId) {
-		this.provinceId = provinceId;
+	public void setBelongToProvince(String belongToProvince) {
+		this.belongToProvince = belongToProvince;
 	}
 
 }
