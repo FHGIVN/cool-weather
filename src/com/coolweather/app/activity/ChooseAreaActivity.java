@@ -266,13 +266,14 @@ public class ChooseAreaActivity extends Activity {
 		return false;
 	}
 	
-	/**判断是否在北京、天津、重庆、上海、香港、澳门、台湾等一级目录下的二级目录中*/
+	/**判断是否在北京、天津、重庆、上海、香港、澳门、台湾、海南等一级目录下的二级目录中*/
 	public boolean isSpecialArea(Province province) {
 		String name = province.getProvincePyName();
 		if (name.equals("beijing") || name.equals("tianjin")
 				|| name.equals("chongqing") || name.equals("shanghai")
 				|| name.equals("xianggang") || name.equals("aomen")
-				|| name.equals("taiwan")) {
+				|| name.equals("taiwan") 
+				 || name.equals("hainan")) {
 			return true;
 		}
 		return false;
