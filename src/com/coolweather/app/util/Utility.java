@@ -172,7 +172,7 @@ public class Utility {
 	/**
 	 * 解析服务器返回的JSON数据,并将解析的数据存储到本地
 	 * */
-	public static void handleWeatherResponse(Context context,String response){
+	public static void handleWeatherResponse(Context context,String response,String urlCode){
 		try {
 			JSONObject object = new JSONObject(response);
 			JSONObject data = object.getJSONObject("data");
@@ -181,7 +181,7 @@ public class Utility {
 			String temp1 = ((JSONObject)(forecast.get(0))).getString("high");
 			String temp2 = ((JSONObject)(forecast.get(0))).getString("low");
 			String weatherDesp = ((JSONObject)(forecast.get(0))).getString("type");
-			saveWeatherInfo(context,cityName,temp1,temp2,weatherDesp);
+			saveWeatherInfo(context,cityName,temp1,temp2,weatherDesp,urlCode);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -190,10 +190,10 @@ public class Utility {
 	/**
 	 * 将服务器返回的所有天气信息存储到SharedPreferences文件中
 	 * */
-	public static void saveWeatherInfo(Context context,String cityName,String temp1,String temp2,String weatherDesp){
+	public static void saveWeatherInfo(Context context,String cityName,String temp1,String temp2,String weatherDesp,String urlCode){
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy年M月d日",Locale.CHINA);
 		SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
-		//editor.putString("url_code",urlCode);
+		editor.putString("url_code",urlCode);
 		editor.putBoolean("city_selected", true);
 		editor.putString("city_name", cityName);
 		editor.putString("temp1", "最"+temp2);  //低温在左

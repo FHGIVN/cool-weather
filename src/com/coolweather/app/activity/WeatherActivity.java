@@ -1,5 +1,6 @@
 package com.coolweather.app.activity;
 
+import com.coolweather.app.service.AutoUpdateService;
 import com.coolweather.app.util.HttpCallbackListener;
 import com.coolweather.app.util.HttpUtil;
 import com.coolweather.app.util.Utility;
@@ -80,16 +81,15 @@ public class WeatherActivity extends Activity implements android.view.View.OnCli
 			finish();
 			break;
 		case R.id.refresh_weather:
-			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+			//SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 			queryFromServer(queryParam);
-
 		default:
 			break;
 		}
 	}
 	
 	/**查询传入的地址和类型去向服务器查询天气代号或天气信息*/
-	private void queryFromServer(String queryParam){
+	private void queryFromServer(final String queryParam){
 //		try {
 //			queryParam = URLEncoder.encode(queryParam, "utf-8");
 //		    // 如有中文一定要加上，在接收方用相应字符转码即可
@@ -101,7 +101,7 @@ public class WeatherActivity extends Activity implements android.view.View.OnCli
 		HttpUtil.sendHttpRequest(address, new HttpCallbackListener() {
 			@Override
 			public void onFinish(String response) {
-				Utility.handleWeatherResponse(WeatherActivity.this, response);
+				Utility.handleWeatherResponse(WeatherActivity.this, response,queryParam);
 				runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
@@ -132,6 +132,13 @@ public class WeatherActivity extends Activity implements android.view.View.OnCli
 		currentDateText.setText(prefs.getString("current_date",""));
 		weatherInfoLayout.setVisibility(View.VISIBLE);
 		cityNameText.setVisibility(View.VISIBLE);
+		
+		/*在showWeather()方法的最后启动AutoUpdateService服务
+		 * 一旦选中某个城市并成功更新天气之后，AutoUpdateService一直在后台运行
+		 * 保证每小时更新一次天气
+		 * */
+		Intent intent = new Intent(this,AutoUpdateService.class);
+		startService(intent);
 	}
 
 }
