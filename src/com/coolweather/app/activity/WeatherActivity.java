@@ -8,6 +8,7 @@ import com.example.coolweather.R;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -19,9 +20,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class WeatherActivity extends Activity implements OnClickListener{
+public class WeatherActivity extends Activity implements android.view.View.OnClickListener {
 	//public static final String WEATHER_ADDRESS ="http://wthrcdn.etouch.cn/weather_mini?city=";
 	public static final String WEATHER_ADDRESS ="http://wthrcdn.etouch.cn/weather_mini?citykey=";
+	String queryParam;
 	
 	private LinearLayout weatherInfoLayout;
 	/**用于显示城市名*/
@@ -45,13 +47,19 @@ public class WeatherActivity extends Activity implements OnClickListener{
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.weather_layout);
 		//初始化各个控件
+		switchCity = (Button) findViewById(R.id.switch_city);
+		refreshWeather = (Button) findViewById(R.id.refresh_weather);
+		switchCity.setOnClickListener(this);
+		refreshWeather.setOnClickListener(this);
+		
 		weatherInfoLayout = (LinearLayout) findViewById(R.id.weather_info_layout);
 		cityNameText = (TextView) findViewById(R.id.city_name);
 		weatherDespText = (TextView) findViewById(R.id.weather_desp);
 		temp1Text = (TextView) findViewById(R.id.temp1);
 		temp2Text = (TextView) findViewById(R.id.temp2);
 		currentDateText = (TextView) findViewById(R.id.current_date);
-		String queryParam = getIntent().getStringExtra("queryParam");
+		
+		queryParam = getIntent().getStringExtra("queryParam");  //获得城市的代号
 		if(!TextUtils.isEmpty(queryParam)){
 			//有县级代号就去查询天气
 			weatherInfoLayout.setVisibility(View.INVISIBLE);
@@ -64,8 +72,20 @@ public class WeatherActivity extends Activity implements OnClickListener{
 	}
 	
 	@Override
-	public void onClick(DialogInterface dialog, int which) {
-		
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.switch_city:
+			Intent intent = new Intent(this,ChooseAreaActivity.class);
+			startActivity(intent);
+			finish();
+			break;
+		case R.id.refresh_weather:
+			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+			queryFromServer(queryParam);
+
+		default:
+			break;
+		}
 	}
 	
 	/**查询传入的地址和类型去向服务器查询天气代号或天气信息*/
@@ -113,4 +133,5 @@ public class WeatherActivity extends Activity implements OnClickListener{
 		weatherInfoLayout.setVisibility(View.VISIBLE);
 		cityNameText.setVisibility(View.VISIBLE);
 	}
+
 }

@@ -193,6 +193,7 @@ public class Utility {
 	public static void saveWeatherInfo(Context context,String cityName,String temp1,String temp2,String weatherDesp){
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy年M月d日",Locale.CHINA);
 		SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+		//editor.putString("url_code",urlCode);
 		editor.putBoolean("city_selected", true);
 		editor.putString("city_name", cityName);
 		editor.putString("temp1", "最"+temp2);  //低温在左
